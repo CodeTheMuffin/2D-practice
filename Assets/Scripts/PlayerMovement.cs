@@ -6,6 +6,7 @@ using GameUtility;
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController2D controller;
+    public Animator animator;
 
     public float runSpeed = 40f;
     float horizontalMove = 0f;
@@ -24,11 +25,12 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 
-
+        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;
+            animator.SetBool("isJumping", true);
         }
 
         if (Input.GetButtonDown("Crouch"))
@@ -43,10 +45,28 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            // Resets player's position and speed
-            player_transform.position = original_position;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            Reset();
         }
+    }
+
+    private void Reset()
+    {
+        // Resets player's position and speed
+        player_transform.position = original_position;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        jump = false;
+        animator.SetBool("isJumping", false);
+    }
+
+
+    public void OnLanding()
+    {
+        animator.SetBool("isJumping", false);
+    }
+
+    public void OnCrouching(bool isCrouching)
+    {
+        animator.SetBool("isCrouching", isCrouching);
     }
 
     private void FixedUpdate()

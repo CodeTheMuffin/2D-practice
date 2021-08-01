@@ -6,9 +6,7 @@ using GameUtility;
 using System.IO;
 
 public class GameManager : MonoBehaviour
-{
-    private string version = "v0.0.0";
-	
+{	
     public Text version_text;
 
     void Start()
